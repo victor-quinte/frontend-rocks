@@ -1,54 +1,78 @@
-import { useState } from "react";
-import reactLogo from "../../assets/react.svg";
-import viteLogo from "/vite.svg";
-import { Link } from "react-router";
-
 export const RootRoute = () => {
-  const [count, setCount] = useState(0);
-
   return (
-    <div className="h-dvh flex flex-col items-center justify-center">
-      <div className="bg-white p-8 rounded-md shadow-lg">
-        <h1 className="text-center font-bold text-3xl text-blue-400 mb-4">
-          Frontend Rocks
-        </h1>
+    <>
+      <header className="py-2 px-4 bg-white shadow-md border-b-4 border-yellow-400 sticky top-0 z-10">
+        <img src="/logo.png" className="w-60 h-auto" />
+      </header>
 
-        <div className="flex justify-center space-x-4 mb-2">
-          <a href="https://vite.dev" target="_blank">
-            <img src={viteLogo} alt="Vite logo" />
-          </a>
-          <a href="https://react.dev" target="_blank">
-            <img src={reactLogo} alt="React logo" />
-          </a>
-        </div>
-
-        <h2 className="text-center font-bold text-xl mb-6">Vite + React</h2>
-
-        <div className="flex flex-col items-center space-y-4">
-          <button
-            className="bg-stone-500 text-white px-4 py-2 rounded-md shadow-md cursor-pointer hover:bg-blue-600 transition-colors"
-            onClick={() => setCount((count) => count + 1)}
-          >
-            Hai premuto il pulsante {count} {count === 1 ? "volta" : "volte"}
-          </button>
-          <p className="text-center">
-            Modifica <code>src/App.tsx</code> e salva per testare l'hot reload
-          </p>
-        </div>
-
-        <p className="text-center text-sm text-blue-400">
-          Clicca sui loghi per saperne di più
-        </p>
-
-        <div className="flex flex-col items-center space-y-4 mt-6">
-          <Link
-            to={`/dettaglio/${count}`}
-            className="inline-block bg-blue-500 text-white px-4 py-2 rounded-md shadow-md cursor-pointer hover:bg-blue-600 transition-colors"
-          >
-            Vai alla pagina di dettaglio {count}
-          </Link>
-        </div>
-      </div>
-    </div>
+      <main className="bg-white">
+        {data.map((item) => (
+          // TODO: Implement the Card component
+          <div>{item.id} - {item.name}</div>
+        ))}
+      </main>
+    </>
   );
 };
+
+const data = [
+  {
+    id: 1,
+    image:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
+    name: "Bulbasaur",
+    types: ["grass", "poison"],
+  },
+  {
+    id: 4,
+    image:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
+    name: "Charmander",
+    types: ["fire"],
+  },
+  {
+    id: 7,
+    image:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png",
+    name: "Squirtle",
+    types: ["water"],
+  },
+  {
+    id: 10,
+    image:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10.png",
+    name: "Caterpie",
+    types: ["bug"],
+  },
+  {
+    id: 25,
+    image:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    name: "Pikachu",
+    types: ["electric"],
+  },
+  {
+    id: 74,
+    image:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png",
+    name: "Geodude",
+    types: ["rock", "ground"],
+  },
+];
+
+// export const RootRoute = () => {
+//   return (
+//     <>
+//       <header className="py-2 px-4 bg-white shadow-md border-b-4 border-yellow-400 sticky top-0 z-10">
+//         <img src="/logo.png" className="w-60 h-auto" />
+//       </header>
+//
+//       <main className="flex flex-wrap items-center justify-center gap-4 p-8">
+//         {data.map((item) => (
+//           <Card key={item.id} {...item} />
+//         ))}
+//       </main>
+//     </>
+//   );
+// };
+
