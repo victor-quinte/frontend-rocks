@@ -1,3 +1,6 @@
+import { Link } from "react-router";
+import { Card } from "../../components/Grid/Card";
+
 export const RootRoute = () => {
   return (
     <>
@@ -5,10 +8,11 @@ export const RootRoute = () => {
         <img src="/logo.png" className="w-60 h-auto" />
       </header>
 
-      <main className="bg-white">
+      <main className="flex flex-wrap items-center justify-center gap-4 p-8">
         {data.map((item) => (
-          // TODO: Implement the Card component
-          <div>{item.id} - {item.name}</div>
+          <Link to={`/dettaglio/${item.id}`} key={item.id}>
+            <Card key={item.id} {...item} />
+          </Link>
         ))}
       </main>
     </>
@@ -59,20 +63,3 @@ const data = [
     types: ["rock", "ground"],
   },
 ];
-
-// export const RootRoute = () => {
-//   return (
-//     <>
-//       <header className="py-2 px-4 bg-white shadow-md border-b-4 border-yellow-400 sticky top-0 z-10">
-//         <img src="/logo.png" className="w-60 h-auto" />
-//       </header>
-//
-//       <main className="flex flex-wrap items-center justify-center gap-4 p-8">
-//         {data.map((item) => (
-//           <Card key={item.id} {...item} />
-//         ))}
-//       </main>
-//     </>
-//   );
-// };
-

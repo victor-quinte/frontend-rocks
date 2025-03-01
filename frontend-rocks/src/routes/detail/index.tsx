@@ -1,5 +1,6 @@
 const data = {
   abilities: ["rock-head", "sturdy"],
+  id: 74,
   image:
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png",
   name: "Geodude",
@@ -38,44 +39,64 @@ export const DetailRoute: React.FC = () => {
         <img src="/logo.png" className="w-60 h-auto" />
       </header>
 
-      <div className="bg-white border border-gray-300 rounded-lg shadow-xl p-6 w-72 text-center relative">
-        <h4 className="text-2xl text-gray-900 uppercase mb-3 tracking-wide font-bold">
-          {data.name}
-        </h4>
-        <div className="bg-gray-100 p-3 rounded-lg flex justify-center">
-          <img
-            src={data.image}
-            alt={data.name}
-            className="w-36 h-36 object-contain"
-          />
+      <div className="bg-white p-12">
+        <div className="flex justify-between">
+          {/* TODO: Implement logic to handle previous and next pokemon */}
+          <div>Prev</div>
+          <div>Next</div>
         </div>
-        <div className="text-sm text-gray-700 mt-3 space-y-2">
-          <div className="flex justify-center space-x-2 mt-2">
-            {data.types.map((type) => (
-              <span
-                key={type}
-                className={`font-bold text-white px-3 py-1 rounded-full text-xs ${typeColors[type.toLowerCase()] || "bg-gray-500"}`}
-              >
-                {type}
-              </span>
-            ))}
+
+        <h1 className="text-4xl text-center text-gray-900 mb-8 tracking-wide font-bold">
+          {data.name} - {data.id}
+        </h1>
+
+        <div className="grid grid-cols-2">
+          <div>
+            <div className="bg-gray-100 p-3 rounded-lg flex justify-center">
+              <img
+                src={data.image}
+                alt={data.name}
+                className="w-36 h-36 object-contain"
+              />
+            </div>
           </div>
-          <p>
-            <span className="font-bold">Height:</span> {data.height}
-          </p>
-          <p>
-            <span className="font-bold">Weight:</span> {data.weight}
-          </p>
-          <p>
-            <span className="font-bold">Attack:</span> {data.attack}
-          </p>
-          <p>
-            <span className="font-bold">HP:</span> {data.hp}
-          </p>
-          <p className="mt-2">
-            <span className="font-bold">Abilities:</span>{" "}
-            {data.abilities.join(", ")}
-          </p>
+
+          <div className="px-4 grid grid-cols-2 grid-rows-auto text-lg text-gray-700 mt-3 space-y-2">
+            <div>
+              <div className="font-bold">Height</div> {data.height}
+            </div>
+
+            <div>
+              <div className="font-bold">Weight</div> {data.weight}
+            </div>
+
+            <div>
+              <div className="font-bold">HP</div> {data.hp}
+            </div>
+
+            <div>
+              <div className="font-bold">Attack</div> {data.attack}
+            </div>
+
+            <div>
+              <div className="font-bold">Types:</div>
+              <div className="justify-center space-x-2">
+                {data.types.map((type) => (
+                  <span
+                    key={type}
+                    className={`font-bold text-white px-3 py-1 rounded-full text-xs ${typeColors[type.toLowerCase()] || "bg-gray-500"}`}
+                  >
+                    {type}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="font-bold">Abilities</div>
+              {data.abilities.join(", ")}
+            </div>
+          </div>
         </div>
       </div>
     </>
