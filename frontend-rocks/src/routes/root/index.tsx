@@ -1,8 +1,9 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
+import reactLogo from "../../assets/react.svg";
 import viteLogo from "/vite.svg";
+import { Link } from "react-router";
 
-export const App = () => {
+export const RootRoute = () => {
   const [count, setCount] = useState(0);
 
   return (
@@ -25,7 +26,7 @@ export const App = () => {
 
         <div className="flex flex-col items-center space-y-4">
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md cursor-pointer hover:bg-blue-600 transition-colors"
+            className="bg-stone-500 text-white px-4 py-2 rounded-md shadow-md cursor-pointer hover:bg-blue-600 transition-colors"
             onClick={() => setCount((count) => count + 1)}
           >
             Hai premuto il pulsante {count} {count === 1 ? "volta" : "volte"}
@@ -35,8 +36,19 @@ export const App = () => {
           </p>
         </div>
 
-        <p className="text-center text-sm text-blue-400">Clicca sui loghi per saperne di più</p>
+        <p className="text-center text-sm text-blue-400">
+          Clicca sui loghi per saperne di più
+        </p>
+
+        <div className="flex flex-col items-center space-y-4 mt-6">
+          <Link
+            to={`/dettaglio/${count}`}
+            className="inline-block bg-blue-500 text-white px-4 py-2 rounded-md shadow-md cursor-pointer hover:bg-blue-600 transition-colors"
+          >
+            Vai alla pagina di dettaglio {count}
+          </Link>
+        </div>
       </div>
     </div>
   );
-}
+};
