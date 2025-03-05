@@ -1,65 +1,81 @@
 import { Link } from "react-router";
 import { Card } from "../../components/Grid/Card";
+import { useEffect, useState } from "react";
+import { PokeAPI } from "../../app/clients/pokeapi";
+
+const DEFAULT_LIMIT = 20;
+interface PokemonCard {
+  id: number;
+  image: string;
+  name: string;
+  types: string[];
+}
+
+async function fetchData(payload: { offset: number }): Promise<PokemonCard[]> {
+  const list = await PokeAPI.getPokemonsList({
+    limit: DEFAULT_LIMIT,
+    ...payload,
+  });
+  const pokemons = await Promise.all(
+    list.results.map(async (item: { name: string; url: string }) => {
+      const pokemon = await PokeAPI.getPokemonByName(item.name);
+      return pokemon;
+    }),
+  );
+
+  return pokemons.map((item) => ({
+    id: item.id,
+    image: item.sprites.other["official-artwork"].front_default ?? "",
+    name: item.name,
+    types: item.types.map((type: any) => type.type.name),
+  }));
+}
 
 export const RootRoute = () => {
+  // TODO: Implement a pagination to substitute the load more button
+  const [offset, setOffset] = useState(0);
+  const [data, setData] = useState<PokemonCard[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchData({ offset })
+      .then((data) => {
+        setData((state) => [...state, ...data]);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [offset]);
+
+  const onLoadMore = () => {
+    setOffset((state) => state + DEFAULT_LIMIT);
+  };
+
   return (
     <>
       <header className="py-2 px-4 bg-white shadow-md border-b-4 border-yellow-400 sticky top-0 z-10">
         <img src="/logo.png" className="w-60 h-auto" />
       </header>
 
-      <main className="flex flex-wrap items-center justify-center gap-4 p-8">
-        {data.map((item) => (
-          <Link to={`/dettaglio/${item.id}`} key={item.id}>
-            <Card key={item.id} {...item} />
-          </Link>
-        ))}
+      <main>
+        <div className="flex flex-wrap items-center justify-center gap-4 p-8">
+          {data.map((item) => (
+            <Link to={`/dettaglio/${item.id}`} key={item.id}>
+              <Card key={item.id} {...item} />
+            </Link>
+          ))}
+        </div>
+
+        <div className="flex justify-center pb-10">
+          <button
+            className="bg-yellow-400 text-white py-2 px-4 rounded-md shadow-md font-bold"
+            onClick={onLoadMore}
+          >
+            {isLoading ? "Loading..." : "Load more"}
+          </button>
+        </div>
       </main>
     </>
   );
 };
-
-const data = [
-  {
-    id: 1,
-    image:
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
-    name: "Bulbasaur",
-    types: ["grass", "poison"],
-  },
-  {
-    id: 4,
-    image:
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
-    name: "Charmander",
-    types: ["fire"],
-  },
-  {
-    id: 7,
-    image:
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png",
-    name: "Squirtle",
-    types: ["water"],
-  },
-  {
-    id: 10,
-    image:
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10.png",
-    name: "Caterpie",
-    types: ["bug"],
-  },
-  {
-    id: 25,
-    image:
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-    name: "Pikachu",
-    types: ["electric"],
-  },
-  {
-    id: 74,
-    image:
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png",
-    name: "Geodude",
-    types: ["rock", "ground"],
-  },
-];
