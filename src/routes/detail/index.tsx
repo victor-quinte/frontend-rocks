@@ -1,38 +1,48 @@
-const data = {
-  abilities: ["rock-head", "sturdy"],
-  id: 74,
-  image:
-    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png",
-  name: "Geodude",
-  height: 40,
-  types: ["rock", "ground"],
-  weight: 200,
-  attack: 80,
-  hp: 40,
-};
+import { useEffect, useState } from "react";
+import { PokeAPI } from "../../app/clients/pokeapi";
+import { useParams } from "react-router";
+import { getTypeColor } from "../utils/getTypeColor";
 
-const typeColors: { [key: string]: string } = {
-  fire: "bg-red-500",
-  water: "bg-blue-500",
-  grass: "bg-green-500",
-  electric: "bg-yellow-400",
-  psychic: "bg-pink-500",
-  ice: "bg-cyan-400",
-  dragon: "bg-purple-700",
-  dark: "bg-gray-700",
-  fairy: "bg-pink-300",
-  normal: "bg-gray-400",
-  fighting: "bg-red-700",
-  flying: "bg-indigo-400",
-  poison: "bg-purple-500",
-  ground: "bg-yellow-600",
-  rock: "bg-yellow-800",
-  bug: "bg-green-700",
-  ghost: "bg-indigo-700",
-  steel: "bg-gray-500",
+interface DetailData {
+  abilities: string[];
+  id: number;
+  image: string;
+  name: string;
+  height: number;
+  types: string[];
+  weight: number;
+  attack: number;
+  hp: number;
+}
+
+const fetchData = async (id: number): Promise<DetailData> => {
+  const data = await PokeAPI.getPokemonByName(id);
+
+  return {
+    abilities: data.abilities.map((ability) => ability.ability.name),
+    attack: data.stats[1].base_stat,
+    height: data.height,
+    hp: data.stats[0].base_stat,
+    id: data.id,
+    image: data.sprites.other["official-artwork"].front_default ?? "",
+    name: data.name,
+    types: data.types.map((type) => type.type.name),
+    weight: data.weight,
+  };
 };
 
 export const DetailRoute: React.FC = () => {
+  const params = useParams<{ id: string }>();
+  const [data, setData] = useState<DetailData>();
+
+  useEffect(() => {
+    const id = Number(params.id);
+    if (Number.isNaN(id)) return;
+    fetchData(id).then(setData);
+  }, []);
+
+  if (!data) return <div>Loading...</div>;
+
   return (
     <>
       <header className="py-2 px-4 bg-white shadow-md border-b-4 border-yellow-400 sticky top-0 z-10">
@@ -84,7 +94,7 @@ export const DetailRoute: React.FC = () => {
                 {data.types.map((type) => (
                   <span
                     key={type}
-                    className={`font-bold text-white px-3 py-1 rounded-full text-xs ${typeColors[type.toLowerCase()] || "bg-gray-500"}`}
+                    className={`font-bold text-white px-3 py-1 rounded-full text-xs ${getTypeColor(type)}`}
                   >
                     {type}
                   </span>

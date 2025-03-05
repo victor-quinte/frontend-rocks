@@ -40,12 +40,22 @@ export const RootRoute = () => {
   useEffect(() => {
     setIsLoading(true);
     fetchData({ offset })
-      .then((data) => {
-        setData((state) => [...state, ...data]);
+      .then((result) => {
+        setData(result);
       })
       .finally(() => {
         setIsLoading(false);
       });
+  }, []);
+
+  useEffect(() => {
+    if (offset === 0) return;
+    setIsLoading(true);
+    fetchData({ offset }).then((result) => {
+      setData((state) => [...state, ...result]);
+    }).finally(() => {
+      setIsLoading(false);
+    });
   }, [offset]);
 
   const onLoadMore = () => {
