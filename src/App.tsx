@@ -38,7 +38,7 @@ export const App = () => {
            className="bg-blue-400 text-black px-4 py-2 rounded-md cursor-pointer hover:bg-blue-600 transition-colors"
           onClick={() => setTitle("fantastico")}
            >
-            cambia titolo
+            cambia 
 
           </button>
 
